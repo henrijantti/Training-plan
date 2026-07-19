@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Wk 12 / 21 — September Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08090c;--sf:#111318;--card:#161921;--bdr:#1e2230;--bdrh:#2a3045;--tx:#e4e4ed;--dim:#6b7084;--mut:#8890a6;--blue:#4a8cff;--green:#3dd68c;--org:#ff9a3e;--red:#ff5c5c;--purp:#a87cff;--yel:#ffd43e;--cyan:#3de8d6;--cut-bg:#1a2640;--cut-bdr:#253660;--mnt-bg:#142e1e;--mnt-bdr:#1d4a2e;--mc-bg:#2e1218;--mc-bdr:#5a2030;--dl-bg:#2e2210;--dl-bdr:#4a3818;--tst-bg:#2a1840;--tst-bdr:#3e2660;--hol-bg:#1a2e3e;--hol-bdr:#2a4a5e}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--tx);max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px}
+.hero{padding:44px 20px 20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(74,140,255,.12),transparent 70%);pointer-events:none}
+.hero h1{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.1;margin-bottom:6px}
+.hero h1 span{color:var(--blue)}
+.hero-sub{color:var(--dim);font-size:12px;line-height:1.5}
+.hs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:14px}
+.s{background:var(--sf);border:1px solid var(--bdr);border-radius:10px;padding:7px 4px;text-align:center}
+.sv{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600}
+.sl{font-size:8px;color:var(--dim);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--bdr);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 8px}
+.nav::-webkit-scrollbar{display:none}
+.nt{flex-shrink:0;padding:12px 11px;font-size:11px;font-weight:600;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.nt.a{color:var(--blue);border-bottom-color:var(--blue)}
+.sec{display:none;padding:16px}.sec.a{display:block}
+.pb{display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border-radius:5px;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.pb.cut{background:var(--cut-bg);color:var(--blue);border:1px solid var(--cut-bdr)}
+.pb.mnt{background:var(--mnt-bg);color:var(--green);border:1px solid var(--mnt-bdr)}
+.pb.hol{background:var(--hol-bg);color:var(--cyan);border:1px solid var(--hol-bdr)}
+.pb.mc{background:var(--mc-bg);color:var(--red);border:1px solid var(--mc-bdr)}
+.pb.dl{background:var(--dl-bg);color:var(--org);border:1px solid var(--dl-bdr)}
+.pb.tst{background:var(--tst-bg);color:var(--purp);border:1px solid var(--tst-bdr)}
+.pd{width:5px;height:5px;border-radius:50%;display:inline-block}
+.pb.cut .pd{background:var(--blue)}.pb.mnt .pd{background:var(--green)}.pb.hol .pd{background:var(--cyan)}.pb.mc .pd{background:var(--red)}.pb.dl .pd{background:var(--org)}.pb.tst .pd{background:var(--purp)}
+.wc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;margin-bottom:10px;overflow:hidden}.wc.x{border-color:var(--bdrh)}
+.wc.now{border-color:var(--purp);box-shadow:0 0 0 1px var(--purp)}
+.wh{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer;user-select:none}
+.wl{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.wn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;background:var(--sf);border:1px solid var(--bdr);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wc.now .wn{background:var(--purp);color:#fff;border-color:var(--purp)}
+.wm{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.wt{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wi{font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.wch{font-size:16px;color:var(--dim);transition:transform .3s;flex-shrink:0}.wc.x .wch{transform:rotate(180deg)}
+.wb{max-height:0;overflow:hidden;transition:max-height .4s ease}.wc.x .wb{max-height:5000px}
+.wcon{padding:0 14px 14px}
+.db{margin-bottom:12px}
+.dl_{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.di{width:20px;height:17px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
+.di.pu{background:var(--red);color:#fff}.di.pl{background:var(--blue);color:#fff}.di.lg{background:var(--green);color:#000}.di.sh{background:var(--purp);color:#fff}.di.rn{background:var(--org);color:#000}.di.run{background:var(--org);color:#000}.di.gym{background:var(--blue);color:#fff}.di.opt{background:#9fc1ef;color:#0a2e57}.di.rest{background:var(--bdr);color:var(--mut)}.kstar{color:var(--yel);font-size:11px;margin-left:3px}.rcue{font-size:10px;font-style:italic;color:var(--dim);margin-top:3px}.rmore{font-size:10px;font-weight:700;color:var(--org);cursor:pointer;display:inline-block;margin-top:5px;user-select:none}.rmore .ch{display:inline-block;transition:transform .3s}.rmore.op .ch{transform:rotate(180deg)}.rdet{max-height:0;overflow:hidden;transition:max-height .4s ease}.rdet.o{max-height:1000px}
+.el{list-style:none}
+.el li{font-size:12px;line-height:1.55;padding:2px 0;color:var(--mut);border-bottom:1px solid rgba(255,255,255,.03)}
+.el li:last-child{border-bottom:none}
+.el .wu{color:var(--dim);font-style:italic;font-size:10px}
+.ss{display:inline-block;background:rgba(74,140,255,.15);color:var(--blue);font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;margin-right:3px}
+.star{display:inline-block;background:rgba(255,212,62,.15);color:var(--yel);font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;margin-right:3px}
+.rc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.rch{padding:13px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.rct{font-size:13px;font-weight:700}.rcd{font-size:10px;color:var(--dim);margin-top:2px}
+.rcb{max-height:0;overflow:hidden;transition:max-height .35s ease}.rc.x .rcb{max-height:2000px}.rc.x .rv{transform:rotate(180deg)}
+.rv{color:var(--dim);transition:transform .3s}
+.me{padding:9px 14px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center}
+.ml{flex:1}.mn{font-size:12px;font-weight:500}.mcu{font-size:10px;color:var(--dim);margin-top:2px}
+.md{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mut);flex-shrink:0;margin-left:8px}
+.yt{display:inline-flex;align-items:center;gap:3px;background:rgba(255,0,0,.1);color:#ff4444;font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;text-decoration:none;margin-top:3px;border:1px solid rgba(255,0,0,.15)}
+.rw{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:11px 13px;margin-bottom:7px}
+.rwt{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.rwk{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+.rwv{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--green)}
+.rwd{font-size:10px;color:var(--dim);line-height:1.5;white-space:pre-line}
+.rwf{font-size:9px;color:var(--mut);font-family:'JetBrains Mono',monospace;margin-top:5px;padding-top:5px;border-top:1px solid var(--bdr)}
+.rw.hw{border-color:var(--hol-bdr);background:var(--hol-bg)}.rw.hw .rwv{color:var(--cyan)}
+.rw.dw{border-color:var(--dl-bdr);background:var(--dl-bg)}.rw.dw .rwv{color:var(--org)}
+.rw.tw{border-color:var(--tst-bdr);background:var(--tst-bg)}.rw.tw .rwv{color:var(--purp)}
+.rw.mw{border-color:var(--mc-bdr);background:var(--mc-bg)}.rw.mw .rwv{color:var(--red)}
+.rwq{margin-top:7px;padding:8px 10px;background:rgba(255,212,62,.05);border:1px solid rgba(255,212,62,.25);border-radius:8px;font-size:10px;color:var(--mut);line-height:1.55;white-space:pre-line}
+.rwq .rwqt{font-size:9px;font-weight:800;color:var(--yel);letter-spacing:.6px;margin-bottom:4px;text-transform:uppercase}
+.rl{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:13px 14px;margin-bottom:7px}
+.rl.nn{border-color:var(--yel);background:rgba(255,212,62,.05)}
+.rlt{font-size:12px;font-weight:700;margin-bottom:3px}.rlb{font-size:11px;color:var(--mut);line-height:1.6}
+.st{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.st .ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.bd{text-align:center;padding:12px 0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;position:relative;margin:6px 0}
+.bd::before,.bd::after{content:'';position:absolute;top:50%;width:18%;height:1px;opacity:.3}
+.bd::before{left:5%}.bd::after{right:5%}
+.bd.c1{color:var(--blue)}.bd.c1::before,.bd.c1::after{background:var(--blue)}
+.bd.c2{color:var(--cyan)}.bd.c2::before,.bd.c2::after{background:var(--cyan)}
+.bd.c3{color:var(--green)}.bd.c3::before,.bd.c3::after{background:var(--green)}
+.bd.c4{color:var(--red)}.bd.c4::before,.bd.c4::after{background:var(--red)}
+.bd.c5{color:var(--org)}.bd.c5::before,.bd.c5::after{background:var(--org)}
+.tb{background:var(--sf);border:1px solid var(--bdr);border-radius:11px;padding:13px;margin-bottom:11px}
+.tbt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dim);margin-bottom:7px}
+.tbr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;gap:8px}
+.tbr .tm{font-family:'JetBrains Mono',monospace;color:var(--mut);white-space:nowrap}
+.tbr.tt{border-top:1px solid var(--bdr);margin-top:3px;padding-top:7px;font-weight:700}.tbr.tt .tm{color:var(--green)}
+.gc{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:12px 14px;margin-bottom:7px;display:flex;align-items:center;gap:11px}
+.gi{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.gi.p{background:rgba(255,212,62,.12);color:var(--yel)}.gi.h{background:rgba(74,140,255,.12);color:var(--blue)}.gi.l{background:rgba(168,124,255,.12);color:var(--purp)}
+.gf{flex:1}.gn{font-size:12px;font-weight:600}.gt{font-size:10px;color:var(--dim);margin-top:1px;font-family:'JetBrains Mono',monospace}.gp{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+.pbar{background:var(--sf);border:1px solid var(--bdr);border-radius:11px;padding:12px 14px;margin-bottom:14px}
+.pr{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--bdr)}.pr:last-child{border:none}
+.prd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pw{font-family:'JetBrains Mono',monospace;color:var(--mut);width:50px;flex-shrink:0}
+.pbw{font-family:'JetBrains Mono',monospace;color:var(--mut);width:55px;flex-shrink:0}
+.pdesc{flex:1;color:var(--tx);font-weight:500}
+.tn{background:linear-gradient(135deg,var(--sf),var(--card));border:1px solid var(--bdr);border-radius:11px;padding:14px;margin:14px 0;text-align:center}
+.tn p{font-size:11px;color:var(--dim)}.tn strong{color:var(--tx)}
+.nnbox{background:rgba(255,212,62,.06);border:1px solid rgba(255,212,62,.35);border-radius:11px;padding:13px 14px;margin-bottom:14px}
+.nnbox .nnt{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--yel);margin-bottom:6px}
+.nnbox p{font-size:11px;color:var(--mut);line-height:1.6;margin-bottom:5px}.nnbox p:last-child{margin-bottom:0}
+.nnbox strong{color:var(--tx)}
+.kban{background:rgba(255,92,92,.08);border:1px solid rgba(255,92,92,.4);border-radius:11px;padding:12px 14px;margin-bottom:12px}
+.kban .kbt{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--red);margin-bottom:4px}
+.kban p{font-size:11px;color:var(--mut);line-height:1.55}.kban strong{color:var(--tx);font-family:'JetBrains Mono',monospace}
+.hist{background:var(--sf);border:1px solid var(--bdr);border-radius:11px;padding:12px 14px;margin-bottom:12px}
+.hist .ht{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--dim);margin-bottom:7px}
+.hr_{display:flex;gap:8px;padding:4px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.04)}
+.hr_:last-child{border:none}
+.hr_ .hw_{font-family:'JetBrains Mono',monospace;color:var(--dim);width:32px;flex-shrink:0;font-weight:600}
+.hr_ .hd_{flex:1;color:var(--mut);line-height:1.45}
+.hr_ .miss{color:var(--red)}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.wc,.rc,.rl,.rw,.gc{animation:fu .3s ease both}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1><span id="weeksToTest">10 Weeks to</span> <span>Test Day</span></h1>
+<p class="hero-sub"><span id="heroWk">Wk 12 of 21</span> · Test block Sep 24–26 (InBody Thu · events Fri · 5K Sat) · Updated Jul 19<br>This week (wk 12): Mon quality 4×1,200 · Tue travel · Wed legs · Thu easy 5–7 · Fri travel · Sat push + hang max (Cph) · Sun pull + 2-min push-up test · ~20–26 km</p>
+<div class="hs">
+<div class="s"><div class="sv">~88→84.4</div><div class="sl">BW kg</div></div>
+<div class="s"><div class="sv">20:30</div><div class="sl">5K tgt</div></div>
+<div class="s"><div class="sv">93→<80</div><div class="sl">Waist cm</div></div>
+<div class="s"><div class="sv">15</div><div class="sl">Pull-ups</div></div>
+</div></div>
+<nav class="nav">
+<div class="nt" data-t="goals">Goals</div>
+<div class="nt a" data-t="weekly">Weekly</div>
+<div class="nt" data-t="sessions">Sessions</div>
+<div class="nt" data-t="mobility">Mobility</div>
+
+</nav>
+<div class="sec" id="goals">
+<div class="st"><div class="ic" style="background:var(--yel);color:#000">★</div>Goals & Strategy</div>
+<div class="nnbox">
+<div class="nnt">Two non-negotiables</div>
+<p><strong>1 · Pull-up true-max test — DONE Jul 4: 9 strict BW.</strong> The real ★★★ baseline is set (the +5 kg volume sets had overstated it — old best single was 10). Path to 15: weighted reserve through the build, BW conversion in the mini-cut; next measured max = test day. The 5K stays untested until race day Sat Sep 26 (TTs dropped).</p>
+<p><strong>2 · One quality run per week, every week.</strong> Tuesday is the quality slot. If a week collapses, drop easy volume, keep the quality run. From wk 16 the commute home IS the quality run — un-skippable.</p>
+</div>
+<div class="pbar">
+<div class="pr"><div class="prd" style="background:var(--blue)"></div><div class="pw">Wk 6–8</div><div class="pbw">89.6→88</div><div class="pdesc">Cut finish · 2,000 kcal · ~0.5 kg/wk · DONE (87.5 fasted Jun 25)</div></div>
+<div class="pr"><div class="prd" style="background:var(--org)"></div><div class="pw">Wk 9</div><div class="pbw">~88</div><div class="pdesc">DONE · 26.7 km + XT · PU baseline 9 · Bn 90×8/8/8 · untracked wk (~3,000/d est)</div></div>
+<div class="pr"><div class="prd" style="background:var(--cyan)"></div><div class="pw">Wk 10–13</div><div class="pbw">~88</div><div class="pdesc">Build+Holiday (Jul 6–Aug 2) · wk 10–11: 3,000–3,400 active (owner) · wk 12–13: untracked travel — normal eating, protein by habit · wk 10 ✓ 28.4 km 3/3 · wk 11 ✓ 17.1 km 3/3 +D</div></div>
+<div class="pr"><div class="prd" style="background:var(--red)"></div><div class="pw">Wk 14–19</div><div class="pbw">→84.4</div><div class="pdesc">Mini-cut OPENS Mon Aug 3 (was Jul 31) · 2,000 provisional → §1d re-tier @ Helsinki InBody Aug 8–9, then weekly Sat scans · Mon rest, D off</div></div>
+<div class="pr"><div class="prd" style="background:var(--purp)"></div><div class="pw">Wk 20–21</div><div class="pbw">≤84.4</div><div class="pdesc">Deload → Test Sep 24–26: InBody Thu · DEXA + lifts Fri · 5K Sat</div></div>
+</div>
+<div class="gc"><div class="gi p">🎯</div><div class="gf"><div class="gn">Pull-ups</div><div class="gt">TESTED 9 strict (Jul 4) → 15 strict</div><div class="gp">★★★ Primary · BW hammer 10/7/6/6/6 Jul 19 (no belt; 10-opener ties best single) — +7.5×5×5 resumes on first belt day</div></div></div>
+<div class="gc"><div class="gi p">💪</div><div class="gf"><div class="gn">Bench 1RM</div><div class="gt">~110 → 1.375 × Sep-24 BW = ~116–117 @ 84.4–85 (restated Jul 19; was 123–126 @ ~90 BW)</div><div class="gp">★★★ Primary · every kg off the official weigh-in = −1.375 kg required · 92.5×6/6/7 Jul 18 — chase 8/8/8 Sat Jul 25 → 95</div></div></div>
+<div class="gc"><div class="gi p">🏃</div><div class="gf"><div class="gn">5K time</div><div class="gt">est ~21:30 (untested) → 20:30 · stretch 20:00</div><div class="gp">★★★ Primary · first 5K = race day (no TT)</div></div></div>
+<div class="gc"><div class="gi p">⏱</div><div class="gf"><div class="gn">Dead hang</div><div class="gt">61s submax, bad handle (Jul 18) → 2:00 · true max est 1:35–1:45 (untested since 101s Jun 28)</div><div class="gp">★★★ Primary · retrained after 3 skipped wks — real max attempt Sat Jul 25 (Cph)</div></div></div>
+<div class="gc"><div class="gi p">🙌</div><div class="gf"><div class="gn">Push-ups (comp — added Jul 19)</div><div class="gt">UNTESTED → 60 in 2:00 · 2-min baseline Sun Jul 26</div><div class="gp">Comp event · not weight-scaled — BW drop assists · weekly density finisher from wk 13</div></div></div>
+<div class="gc"><div class="gi p">⚡</div><div class="gf"><div class="gn">1 mile (comp — added Jul 19)</div><div class="gt">UNTESTED (est ~6:05–6:15) → ~5:55–6:05 provisional · needs ~3:40–3:45/km</div><div class="gp">Comp event · day TBC (assumed Fri Sep 25 — confirm) · mile-pace 200s from wk 17 · no TT, first mile = race day</div></div></div>
+<div class="gc"><div class="gi p">📉</div><div class="gf"><div class="gn">Body fat</div><div class="gt">15.2% DEXA / 12.8% InBody (Jun 24–25) → <12% @ ≤84.4 kg · FFM held 75.5 ✓</div><div class="gp">★★★ Non-negotiable · protein decides it · InBody chain now the Helsinki device, weekly Sat scans from Aug 8</div></div></div>
+<div class="gc"><div class="gi h">🦵</div><div class="gf"><div class="gn">Squat 1RM</div><div class="gt">~120 → 138–145 kg · refresh: 105×6/6/6 Jul 15 ✓ (a week early)</div><div class="gp">★★ Secondary · 107.5 on clean sixes, holds through the cut</div></div></div>
+<div class="gc"><div class="gi l">🏋️</div><div class="gf"><div class="gn">Deadlift</div><div class="gt">~180 → maintain via RDL only</div><div class="gp">★ Maintain only</div></div></div>
+<div class="tn"><p>Log lifting in <strong>Train / Motra</strong> · weight/waist PAUSED Jul 12 → resume Mon Aug 3 · Helsinki InBody Aug 8–9, then weekly Sat scans<br>This page = program reference · † paces tuned by execution (no TTs)</p></div>
+</div>
+<div class="sec a" id="weekly"><div class="st"><div class="ic" style="background:var(--blue);color:#fff">W</div>Weekly Plan</div>
+<div class="kban"><div class="kbt" id="kbNow">Now · Wk 12 (Jul 20–26)</div><p><strong>Mon</strong> QUALITY 4×1,200 m @ 4:08–4:12, 2:30 jog — by watch, valve → 3×10′ threshold · <strong>Tue</strong> travel · <strong>Wed</strong> Legs — Sq 105×3×6 + RDL 100 · <strong>Thu</strong> drive + easy 5–7 km · <strong>Fri</strong> drive · <strong>Sat</strong> Push (Cph) — hang FIRST, real max attempt + bench 92.5 chase 8/8/8 · <strong>Sun</strong> Pull — PU +7.5×5×5 (belt) or BW volume, then the 2-min push-up baseline (60-in-2:00 comp event) · run total ~20–26 km · protein by habit</p></div>
+<div id="wks"></div></div>
+<div class="sec" id="sessions"><div class="st"><div class="ic" style="background:var(--green);color:#000">S</div>Sessions</div>
+<p style="font-size:11px;color:var(--dim);margin-bottom:6px">Wed=Legs · Sat=Push+Hang · Sun=Pull · Thu=Session D (optional) · ONE session per day, no doubles</p>
+<p style="font-size:11px;color:var(--org);margin-bottom:14px">Run FULL sessions — trimmed 23–37 min sessions drop to 2–3 top sets and don't build the lift. If short on time, cut from the bottom of the list — the ★ lift always runs in full.</p>
+<div class="tb"><div class="tbt"><span style="color:var(--red)">●</span> Saturday — Push + Hang (~65 min)</div><div class="tbr"><span>WU: RC prehab</span><span class="tm">5m</span></div><div class="tbr"><span><span class="star">★</span>Dead hang FIRST: 1×max (→2:00) + 1×~70% — grip fresh</span><span class="tm">6m</span></div><div class="tbr"><span><span class="star">★</span>Bench 3×6–8 @ 92.5 (WU 20/60/80 · chase 8/8/8 → 95)</span><span class="tm">18m</span></div><div class="tbr"><span>Incline DB press 3×8–10 @ 28</span><span class="tm">8m</span></div><div class="tbr"><span>DB shoulder press 3×7–10 @ 22</span><span class="tm">8m</span></div><div class="tbr"><span>Lat raise 3×10–12 @ 10–12</span><span class="tm">6m</span></div><div class="tbr"><span>Dips 2×8–12 (optional — first to drop)</span><span class="tm">5m</span></div><div class="tbr tt"><span>Total — no trims</span><span class="tm">~56m</span></div></div>
+<div class="tb"><div class="tbt"><span style="color:var(--blue)">●</span> Sunday — Pull (~65 min)</div><div class="tbr"><span>WU: band pull-aparts + 1× BW PU set</span><span class="tm">5m</span></div><div class="tbr"><span><span class="star">★</span>Weighted pull-ups 5×5 @ +7.5 kg (all 5s clean → +10; BW volume if no belt)</span><span class="tm">16m</span></div><div class="tbr"><span>Seal row 3×8–10 @ 57 — no retreating</span><span class="tm">9m</span></div><div class="tbr"><span>Lat pulldown wide 3×6–10 @ 70</span><span class="tm">8m</span></div><div class="tbr"><span>Rear delt fly 3×8–12 @ 61</span><span class="tm">7m</span></div><div class="tbr"><span>Face pulls 2×11–12 @ 25</span><span class="tm">5m</span></div><div class="tbr"><span>Incline DB curl 3×8–12 @ 12</span><span class="tm">6m</span></div><div class="tbr tt"><span>Total — NO hang after pulls</span><span class="tm">~56m</span></div></div>
+<div class="tb"><div class="tbt"><span style="color:var(--green)">●</span> Wednesday — Legs (~50 min)</div><div class="tbr"><span>WU: hip mobility + bar warmups (20/60/80)</span><span class="tm">6m</span></div><div class="tbr"><span>Back squat 3×5–6 @ 105 (cleared Jul 15 · builds to 112.5)</span><span class="tm">14m</span></div><div class="tbr"><span>RDL 3×10 @ 100 (cleared Jul 15)</span><span class="tm">10m</span></div><div class="tbr"><span>Seated calf raise 3×11–13 @ 50</span><span class="tm">6m</span></div><div class="tbr"><span>Ab rollout 3×12–16</span><span class="tm">6m</span></div><div class="tbr tt"><span>Total</span><span class="tm">~42m</span></div></div>
+<div class="tb"><div class="tbt"><span style="color:var(--purp)">●</span> Session D (~45 min · OPTIONAL · day flexible, default Thu)</div><div class="tbr"><span>Everything RIR 2–3 — zero soreness for the next hard day</span><span class="tm"></span></div><div class="tbr"><span>Dead hang 2×60–70s (submax practice — grip first)</span><span class="tm">5m</span></div><div class="tbr"><span><span class="star">★</span>Toes-to-bar 3×6–10 strict, no swing (core · scale: hanging knee raises)</span><span class="tm">6m</span></div><div class="tbr"><span>BW pull-ups 3×5–6 easy</span><span class="tm">7m</span></div><div class="tbr"><span>Shoulder press 3×10–12 light</span><span class="tm">7m</span></div><div class="tbr"><span>Lat raise 3×12–15 @ 10</span><span class="tm">6m</span></div><div class="tbr"><span>Dips 2×8–12</span><span class="tm">5m</span></div><div class="tbr"><span>Preacher curl 2×9–12 @ 32</span><span class="tm">5m</span></div><div class="tbr tt"><span>First to drop · never a substitute · off in mini-cut</span><span class="tm">~40m</span></div></div>
+<div class="tb"><div class="tbt"><span style="color:var(--org)">●</span> Standard Run Week (4 runs · no doubles)</div><div class="tbr"><span>Mon: Easy 4–6 km @ 5:30–5:55</span><span class="tm">~30m</span></div><div class="tbr"><span><span class="star">★</span>Tue: QUALITY — tempo / intervals (detail in Weekly)</span><span class="tm">~35m</span></div><div class="tbr"><span>Thu: Easy 4–6 km = run-commute to gym</span><span class="tm">~30m</span></div><div class="tbr"><span>Fri: Long 8–14 km @ 5:40–6:00</span><span class="tm">~50–85m</span></div><div class="tbr tt"><span>Mini-cut (wk 15+): Mon becomes REST</span><span class="tm">3 runs</span></div></div>
+<p style="font-size:11px;color:var(--dim);margin:14px 0 6px">5K target 20:30 primary · 20:00 stretch · commute-aware</p>
+<div class="tb"><div class="tbt"><span style="color:var(--org)">●</span> Run paces &amp; rules</div><div class="tbr"><span>Easy · conversational</span><span class="tm">5:30–5:55 /km</span></div><div class="tbr"><span>Long · easy aerobic, longer</span><span class="tm">5:40–6:00 /km</span></div><div class="tbr"><span>Tempo · comfortably hard</span><span class="tm">4:35–4:40 /km</span></div><div class="tbr"><span>Goal race pace · = 20:30</span><span class="tm">4:06 /km</span></div><div class="tbr tt"><span>Plan 4 runs · floor 3 + 1 quality · cycling/kayak/MTB ≠ run km · paces are living estimates, tuned by execution †</span><span class="tm"></span></div></div>
+</div>
+<div class="sec" id="mobility"><div class="st"><div class="ic" style="background:var(--cyan);color:#000">M</div>Mobility & Prehab</div><p style="font-size:11px;color:var(--dim);margin-bottom:14px">10 min, 3×/wk. Tap ▶ for demos.</p><div id="mob"></div></div>
+
+<div class="sec" id="workload"><div class="st"><div class="ic" style="background:#ff5c5c;color:#fff">L</div>Workload</div>
+<p style="font-size:11px;color:var(--dim);margin-bottom:14px">Total weekly time + load score. Wk 13's planned peak (35 km) is now travel-reduced to ~24–28 (owner, Jul 19) — wk 9's 30–35 km stays the block's high-water mark. Wk 11 CLOSED as a BIG week by owner call (Jul 12) — hikes/MTB rode on top of the score; HR/HRV readings were unreliable Jul 15–22. Lift minutes assume Session D done; subtract ~45m if skipped.</p>
+<div id="wkld"></div>
+<div class="st" style="font-size:14px;margin-top:20px;margin-bottom:8px">Weekly Lifting Volume</div>
+<p style="font-size:11px;color:var(--dim);margin-bottom:14px">Sets per muscle group per week (3 main sessions; +D = Session D adds when done).</p>
+<div id="muscle-vol"></div>
+</div>
+
+<div class="sec" id="rules"><div class="st"><div class="ic" style="background:var(--red);color:#fff">!</div>Rules</div><div id="rls"></div></div>
+<script>
+const W=[
+{w:6,d:"Jun 8–14",ph:"cut",t:"Cut finish · split switched Mon",bw:"89.6",k:"2,000 · 180g",sa:"★ Dead hang FIRST: 1×max (tgt 100s) + 1×~70%\n★ Bench 3×8 @ 88 kg — ONE number, 8/8/8 → 90\nIncline DB press 3×8–10 @ 28\nDB shoulder press 3×7–10 @ 22\nLat raise 3×10–12\nDips 2×8–12 (optional)",su:"★ Wtd PU 5×5 @ +5 kg — all 5s clean → +7.5\nSeal row 3×8–10 @ 57\nLat pulldown 3×6–10 @ 70\nRear delt fly 3×8–12 @ 61\nFace pulls 2×11–12\nIncline DB curl 3×8–12",tu:"Legs already trained this week (Jun 9 — old split)\nNext legs session = Wed Jun 17",th:"— Session D starts wk 7",rn:"TRANSITION WEEK\nOptional: one easy 5 km Sat or Sun if fresh\nFull 4-run schedule starts Mon Jun 15"},
+{w:7,d:"Jun 15–21",ph:"cut",t:"Cut finish · first full new-split week",bw:"~89",k:"2,000 · 180g",sa:"★ Dead hang FIRST: 1×max + 1×~70%\n★ Bench 3×8 @ 88 kg (8/8/8 → 90)\nIncline DB press 3×8–10 @ 28\nDB shoulder press 3×7–10 @ 22\nLat raise 3×10–12\nDips 2×8–12 (optional)",su:"★ Wtd PU 5×5 @ +5 kg → +7.5 when all 5s clean\nSeal row 3×8–10 @ 57\nLat pulldown 3×6–10 @ 70\nRear delt fly 3×8–12 @ 61\nFace pulls 2×11–12\nIncline DB curl 3×8–12",tu:"Back squat 3×5–6 @ 100 (parked — by choice)\nRDL 3×10 @ 80 (→85 when all sets solid)\nSeated calf raise 3×11–13 @ 50\nAb rollout 3×12–16",th:"OPTIONAL Session D (RIR 2–3)\nDead hang 2×60–70s submax\nBW pull-ups 3×5–6 easy\nShoulder press 3×10–12 light · Lat raise 3×12–15\nDips 2×8–12 · Preacher curl 2×9–12",rn:"Mon: easy 5 @ 5:30–5:55\n★ Tue: TEMPO — 2 wu + 20 min @ 4:35–4:40 + 1 cd\nThu: easy 4 (run-commute to gym)\nFri: long 8 @ 5:40–6:00\nTotal ~23 km"},
+{w:8,d:"Jun 22–28",ph:"cut",t:"Cut END · compressed Mon–Sat · Sun = travel",bw:"~88.5",k:"2,000 · 180g",sa:"★ Dead hang FIRST: 1×max + 1×~70%\nBench 3×8 @ 88–89 (8/8/8 → 90)\nIncline DB press 3×8–10 @ 28\nDB shoulder press 3×7–10 @ 22\nLat raise 3×10–12 · Dips 2×8–12 (opt)",su:"✈ SUNDAY = TRAVEL — no training\nPull moved to Thursday this week",tu:"Back squat 3×5–6 @ 100 (parked — by choice)\nRDL 3×10 @ 80\nSeated calf raise 3×11–13 @ 50\nAb rollout 3×12–16",th:"★ FULL PULL today — replaces Session D (Sun = travel)\nWtd pull-ups: HOLD +7 kg, target a clean 5×5\nSeal row 3×8–10 @ 57 · Lat pulldown 3×6–10 @ 70\nRear delt fly 3×8–12 @ 61 · Face pulls 2×11–12\nIncline DB curl 3×8–12 · NO max test (moved to wk 9)",rn:"Mon: easy 5–6 + 4–6×20s strides\n★ Tue: CRUISE 4×8 min @ threshold 4:35–4:40, 2′ jog\nThu: easy 3–4 (run-commute to Pull)\nFri: long 7–8 @ 5:40–6:00\nTotal ~24 km"},
+{w:9,d:"Jun 29–Jul 5",ph:"dl",t:"★ Travel ACTIVE wk · gym Sat–Sun · PU test Sun",bw:"~88",k:"2,550",sa:"COMMERCIAL GYM — full push template\n★ Dead hang FIRST: 1×max (101s last — chase 110) + 1×~70%\n★ Bench 3×8 @ 90 — 8/8/6 two sessions running; 8/8/8 unlocks 92.5 (WU 20/60/80)\nIncline DB press 3×8–10 @ 28\nDB shoulder press 3×7–8 @ 22\nLat raise 3×10–12 @ 10 · Dips 2×8–12\nUnfamiliar kit → match by RIR 1–2, not the logged number",su:"★ PU TRUE-MAX TEST FIRST — fresh, strict BW\nWU 1×5, rest 3–4 min → ONE all-out set (beat 10) — chin over, no kip. This is the →15 baseline\nThen reduced volume: wtd PU 3×5 @ +5\nSeal/BB row 3×8–10 @ ~57 · Lat pulldown 3×8 @ ~70\nRear delt fly 3×10 (back in — skipped wk 8)\nFace pulls 2×12–14 · Incline curl 2×9–12",tu:"No legs session this week — travel deload structure\n(2 gym sessions, no legs, no Session D = the deload)\nKayak / SUP / MTB cover the legs",th:"OUTDOOR XT instead of Session D\nKayak · SUP · MTB — easy–moderate fun volume\nLog it · NEVER counted as run km",rn:"Mon: easy 9.4 ✓ done\n★ Thu: QUALITY — 2 wu + 3×8 min @ 4:35–4:40, 2′ jog + cd (swap Thu↔Fri if XT trashed the legs)\nFri: easy 4–6 + kayak/MTB\nBanked Mon–Wed: 20.3 km run (Wed 10.9 hilly RE 108 = the week's hard run) + Tue SUP 3.2\nJump guard: wk-8 actual was 21.4 km → any calf/achilles/knee whisper caps the week at 30\nTotal 30–35 km"},
+{w:10,d:"Jul 6–12",ph:"hol",t:"Build opens · Vierumäki active wk",bw:"~88",k:"3,000–3,400 clean (Jul 10 decision)",sa:"★ Dead hang FIRST 1×max + 1×~70% — skipped wk 9, chase 105–110s\n★ Bench 3×6–8 @ 92.5 — UNLOCKED (90×8/8/8 Jul 5) · x/x/6 at the new weight is a pass, don't retreat\nIncline DB press 3×8–10 @ 28–30\nDB shoulder press 3×8–10 @ 22–24\nLat raise 3×10–12 · Dips 2×8–12",su:"THIS WEEK: pull lands THU (no gym Sun)\n★ Wtd PU 5×5 @ +7.5 kg — all 5s clean → +10\nSeal row 3×8–10 @ 57–60\nLat pulldown 3×6–10 @ 70–72.5\nRear delt fly 3×8–12 · Face pulls 2×12\nIncline DB curl 3×8–12",tu:"Back squat 3×5–6 @ 102.5 (refresh — hit 6/6/6 Jul 8 ✓)\nRDL 3×10 @ 90 barbell (10/10/11 Jul 8 ✓)\nCalf raise 3×11–13 · Ab rollout 3×12–16",th:"OPTIONAL Session D — MONDAY this week, after the easy run (documented double; Thu = pull)\nDead hang 2×60–70s submax (grip first)\n★ Toes-to-bar 3×6–10 strict, no swing — NEW core (scale: hanging knee raises)\nBW pull-ups 3×5–6 easy · shoulder press 3×10–12 light\nLat raise 3×12–15 · dips 2×8–12 · pallof 2×10/side\nRIR 2–3 · first to drop · T2B moderate — ab DOMS lands on Wed squats",rn:"Mon: easy 5 + 4–6×20s strides\n★ Tue: CRUISE — 3×10 min @ 4:35–4:40 †, 2′ jog (~9–10 km) — last hard run before ~Jul 23\nFri: long 12 easy\nSun: easy ≤45 min (~7–8 km) — NO GYM Sun\nHR unreliable Jul 15–22 — by watch\nTotal ~33 km · whisper → trim Sun/Mon km, never Tue"},
+{w:11,d:"Jul 13–19",ph:"hol",t:"Build · Alps BIG wk by choice (owner, Jul 12) · watch-paced",bw:"—",k:"3,000–3,400 clean · 180g",sa:"★ HANG FIRST: 1×max + 1×~70% — skipped 2 wks, non-negotiable\n★ Bench HOLD 92.5 3×6–8 — chase 8/7/7 → 3×8, no adds this week (a heavy bar feel is expected — don't retreat)\nIncline DB press 3×8–10 @ 27.5–30\nDB shoulder press 3×8–10 @ 22.5\nLat raise 3×10–12 · Dips 2×8–12",su:"★ Wtd PU 5×5 @ +7.5 — complete all five 5s (got 4×5 + opener wk 10); +10 waits for wk 12\nRow 3×8–10 (hotel kit — match by RIR, not the logged number)\nLat pulldown 3×6–10 @ 70–72.5\nRear delt fly / face pulls per kit\nIncline curl 3×8–12",tu:"DONE Wed: squat 105×6/6/6 (cleared +2.5 — stands, nothing else moves up this week)\nRDL 100×10/10/10 done\n31′ trimmed session — accepted on the double day",th:"OPTIONAL 40′ D — Thu evening, only if the family ride ≤ ~4 h and legs feel fine\nSubmax hangs 2×60–70s + strict T2B 3×6–8 + light shoulders/lat raise\nFirst to drop — hang MAX lives Sat regardless",rn:"Restructured Jul 15 — hours, not km · recovery readings unreliable — judge by RPE\nMon: travel ✓ (no run)\n★ Tue: fartlek 9.5 ✓ DONE (RE 68, ~4 hard kms @ HR 147–158)\nThu: family e-bike 3–5 h easy Z1 (never run km)\nFri: THE CLIMB ~5 km = the long run — RPE 6, reset at the hütte, hike the top, walk down\nSun: optional 20′ easy jog\nTotal ~15 km run + ~10 h aerobic by design"},
+{w:12,d:"Jul 20–26",ph:"hol",t:"Build · travel chain to Copenhagen (Austria→Munich→ferry→Sthlm→Vimmerby) · quality MON",bw:"—",k:"untracked — normal eating, protein by habit",sa:"★ Dead hang FIRST — REAL MAX ATTEMPT if the bar is decent (tgt ≥1:35; retrained after 3 skipped wks, true max est 1:35–1:45)\n★ Bench 92.5 chase 8/8/8 (clears → 95)\nCopenhagen, friend's gym — match accessories by RIR if kit differs\nIncline DB press / DB shoulder press / lat raise per available kit",su:"★ Wtd PU +7.5×5×5 IF a dip belt exists, else BW volume (density work)\nCph AM or Göteborg PM — venue TBD\nRow / lat pulldown / rear delt fly / face pulls per available kit\n★ END: 2-MIN PUSH-UP BASELINE TEST (new comp event, tgt 60 by Sep 25) — one honest max, log the number",tu:"Wed, home Stockholm: Sq 105×3×6 — consolidate (repeat, don't push)\nRDL 100 — short 35–40′ version is fine\nTracking dark through Aug 2 (owner)",th:"OFF this week — travel chain leaves no slot\nTue = travel/rest (flight + ferry) · Thu = drive to Vimmerby + evening easy run instead",rn:"★ Mon: QUALITY — 4×1,200 m @ 4:08–4:12 †, 2:30 jog — by watch (RPE valve → 3×10′ threshold if legs dead) — moved back from the Thu Jul 23 slot\nThu: drive to Vimmerby + evening easy 5–7\nTravel days (Tue flight+ferry · Fri drive to Cph): rest, no running\nTotal ~20–26 km (program 32 waived for travel)"},
+{w:13,d:"Jul 27–Aug 2",ph:"hol",t:"Build · travel chain to Como (Gbg→Skara→Örebro→Sthlm) · ENTRY-WEIGHT wk",bw:"—",k:"untracked — normal eating, protein by habit (ENTRY-WEIGHT wk)",sa:"★ Dead hang FIRST — real attempt if not yet cleared Jul 25\n★ Bench 95×3×8 IF unlocked wk 12, else hold 92.5 — chase 8/8/8\nFri 31, home — last push before the cut opens\nIncline DB press / DB shoulder press / lat raise per template",su:"★ Wtd PU +7.5×5×5 with a belt (first belt day since wk 11) — clean 5×5 unlocks +10\nSat Aug 1 AM, home — then evening flight to Milan\nSeal row / lat pulldown / rear delt fly / face pulls per template",tu:"Tue 28, Göteborg AM: Sq 107.5×3×5–6 IF wk-12 sixes were smooth, else hold 105\nRDL 100 (holds)\nCalf raise / ab rollout per template — then drive to Skara",th:"OFF this week — Thu 30 is a drive + rest day (Örebro→Stockholm)",rn:"★ Mon: QUALITY — 5×1,000 m @ 4:06–4:10 †, 2′ jog (~10 km) — Göteborg, moved back from Tue\nWed: easy 5–6 (Örebro), then drive on\nSun: easy 6–8 (Como)\nTotal ~24–28 km (program 35 waived for travel) — ENTRY-WEIGHT wk: adult eating now decides whether ≤84.4 stays reachable"},
+{w:14,d:"Aug 3–9",ph:"mc",t:"Cut wk 1 + Finland move · ★ first Helsinki InBody Aug 8–9",bw:"—",k:"2,000 provisional (opens Mon Aug 3) · 180g",sa:"★ Dead hang MAX attempt (tgt ~110–115s)\n★ Bench: hold ~95 (the build's realistic top out of wk 12–13) — a cleared increment (→97.5) may be taken in cut wk 1 only (§1c) · FULL sessions\nIncline DB press 3×8–10 @ 30\nDB shoulder press 3×8–10 @ 24\nLat raise 3×10–12 · Dips 2×8–12",su:"★ Wtd PU 5×5 @ +7.5–10 kg (cap — per auto-reg; exact load depends on wk 12–13 belt access)\n+ optional BW AMRAP check (tgt 12–13)\nSeal row 3×8–10 @ 60\nLat pulldown 3×6–10 · Rear delt fly 3×8–12\nFace pulls 2×12 · Incline DB curl 3×8–12",tu:"Back squat: hold ~105–107.5 (107.5 if wk-12 sixes held)\nRDL 3×10 @ 100 (holds)\nCalf raise 3×11–13 · Ab rollout 3×12–16",th:"OPTIONAL Session D — last one (D off from wk 15)\nThu: first waist reading in 5 weeks (AM), then ferry to Finland — travel-day minimum applies\n★ Sat 8/Sun 9: first Helsinki InBody fasted AM BEFORE training — re-derives the 84.4 pass line from FFM + re-tiers kcal (§1d) · photos F/S/B same morning",rn:"Mon: cut opens (Como→home) — 2,000 kcal, protein 180, daily weigh-in + diet-log restart\n★ Tue: QUALITY — 6×800 m @ 4:00–4:05 †, 2′ jog — deficit day 2, glycogen still full, run as programmed\nThu: waist AM, then ferry — travel-day minimum applies\nFri: arrival — rest or 20′ shakeout only (no long run this week)\nTotal ~22–26 km (cut wk 1 + move trim)"},
+{w:15,d:"Aug 10–16",ph:"mc",t:"Mini-Cut · Mon rest begins, D off",bw:"~87",k:"2,000/§1d · 180g",sa:"★ Dead hang 1×max + 1×~70%\n★ Bench 3×6–8 @ 102.5 — HOLD, FULL sessions only\nIncline DB press 3×8–10\nDB shoulder press 3×8–10\nLat raise 3×10–12",su:"★ PU transition: wtd 3×5 @ +5 + BW 2×(max−2)\nSeal row 3×8–10 @ 60\nLat pulldown 3×6–10\nRear delt fly 3×8–12 · Face pulls 2×12\nIncline DB curl 2×10",tu:"Back squat 3×5 @ 105–107.5 — hold, NO grinding\nRDL 3×10 @ 85\nCalf raise 3×12 · Ab rollout 3×12",th:"Session D OFF by default (mini-cut recovery budget)",rn:"Mon: REST (recovery beats 4 km at 2,000 kcal)\n★ Tue: CRUISE — 2×10 min @ threshold †, 2′ jog\nThu: easy 4\nFri: easy 6\nTotal ~16 km"},
+{w:16,d:"Aug 17–23",ph:"mc",t:"Mini-Cut · 5 km commute starts",bw:"~86.5",k:"2,000/§1d · 180g",sa:"★ Dead hang 1×max + 1×~70%\n★ Bench 3×6–8 @ 102.5 (hold)\nIncline DB press 3×8–10\nDB shoulder press 3×8–10\nLat raise 3×10–12",su:"★ PU: BW DENSITY — 2 blocks, sets of (max−2), 25–30 total reps\nBW dropping 88→~84.4 = free reps\nSeal row 3×8–10 · Lat pulldown 3×6–10\nRear delt fly 3×8–12 · Face pulls 2×12",tu:"Back squat 3×5 @ 105–107.5 (hold)\nRDL 3×10 @ 85\nCalf raise 3×12 · Ab rollout 3×12",th:"Session D OFF",rn:"★ NEW 5 KM COMMUTE\nMon: rest\n★ Tue: commute home = 5 km TEMPO † — the commute IS the session\nThu: easy commute 5\nFri: easy 5–6\nTotal ~16 km"},
+{w:17,d:"Aug 24–30",ph:"mc",t:"Mini-Cut",bw:"~85.9",k:"2,000/§1d · 180g",sa:"★ Dead hang 1×max + 1×~70%\n★ Bench 3×6–8 @ 102.5 (hold)\nIncline DB press 3×8\nDB shoulder press 3×8\nLat raise 3×10–12",su:"★ PU: BW density — 25–30 total reps\nSeal row 3×8–10 · Lat pulldown 3×6–10\nRear delt fly 3×8–12 · Face pulls 2×12",tu:"Back squat 3×5 @ 105–107.5 (hold)\nRDL 3×10 @ 85\nCalf raise 3×12 · Ab rollout 3×12",th:"Session D OFF",rn:"Mon: rest\n★ Tue: commute home @ RACE PACE † (5K simulation)\nThu: easy commute 5\nFri: easy 5 + 4×20s strides\nTotal ~15 km"},
+{w:18,d:"Aug 31–Sep 6",ph:"mc",t:"Mini-Cut",bw:"~85.4",k:"2,000/§1d · 180g",sa:"★ Dead hang 1×max + 1×~70%\n★ Bench 3×6–8 @ 102.5 (hold)\nIncline DB press 3×8\nDB shoulder press 3×8\nLat raise 3×10–12",su:"★ PU: BW density — 25–30 total reps\nSeal row 3×8–10 · Lat pulldown 3×6–10\nRear delt fly 3×8–12 · Face pulls 2×12",tu:"Back squat 3×5 @ 105–107.5 (hold)\nRDL 3×10 @ 85\nCalf raise 3×12 · Ab rollout 3×12",th:"Session D OFF",rn:"Mon: rest\n★ Tue: commute FARTLEK — 5×(2′ @ RP / 1′ float)\nThu: easy commute 5\nFri: easy 5 + strides\nTotal ~15 km"},
+{w:19,d:"Sep 7–13",ph:"mc",t:"Mini-Cut END · gate Sep 13–14 · watch-paced",bw:"~84.8",k:"2,000/§1d · 180g",sa:"★ Bench 3×5 @ 105 — one push, ONLY if reps held\nDead hang 1×max (no forcing)\nLight accessories",su:"★ PU: BW 3×12 easy\nSeal row 3×8 · Lat pulldown 3×8\nFace pulls 2×12 · Curl 2×10",tu:"Back squat 3×5 @ 110 — one push, only if solid\nRDL 3×10 @ 85\nCalf raise 3×12",th:"Session D OFF",rn:"Pace by WATCH only this week\nMon: rest\n★ Tue: commute 1 easy + 3×1 km @ RP, 90s float + 1 easy\nThu: easy 4\nFri: easy 4\nTotal ~12 km"},
+{w:20,d:"Sep 14–20",ph:"dl",t:"★ Deload + AM sharpener (go/no-go)",bw:"~84.5",k:"~2,750 (verified maint)",sa:"Bench: heavy single @ ~110 (opener feel) + 2×5 @ 90\n★ Dead hang 2:00 ATTEMPT (fresh, rested)\nLight accessories — no failure anywhere",su:"Pull-ups 3×8 BW easy\nLight rows + face pulls\nNO grinding",tu:"Squat moderate triple @ 100\nRDL 2×6 @ 70 light\nSkip the rest",th:"OFF",rn:"Mon: rest\n★ Tue: AM SHARPENER — 3×1,000 @ RP 4:06, full recovery (go/no-go for the race plan)\nThu: easy 4 + strides\nFri: rest\nTotal ~10 km"},
+{w:21,d:"Sep 21–26",ph:"tst",t:"★ TEST WEEK",bw:"≤84.4",k:"2,550",sa:"Wed: rest + mobility, mild scan-day prep (lighter-carb/low-sodium, normal protein, no dehydration)",su:"Complete rest · visualization",tu:"Mon–Tue: rest, light walks",th:"★ TEST DAYS\n\nThu Sep 24: OFFICIAL InBody (Helsinki, fasted AM) — mild weigh-in management only, no dehydration; re-feed carbs immediately after\n\nFri Sep 25: MAIN TEST DAY (fuelled)\nMidday DEXA (Helsinki, provider TBD) · COMP: PU max (15) + Dead hang (2:00) + Push-ups 2:00 (60) + Bench 1RM (1.375 × Thu BW ≈ 116–117) + 1 MILE ~5:55–6:05 (assumed this day — CONFIRM) · personal: Squat 1RM (~140) + DL casual (~180) — within-day order provisional, confirm at a check-in\n\nSat Sep 26 AM: 5K RACE (20:30 / stretch 20:00)",rn:"Mon: easy 3 + strides\nThu: InBody AM, then shakeout 2 + strides\n★ Sat Sep 26 AM: 5K RACE\n20:30 primary · 20:00 stretch · @ ~84.4 kg"},
+];
+const M=[
+{t:"Routine A — Hip Focus",dy:"Monday · 10 min",cl:"var(--blue)",ex:[{n:"90/90 hip switches",d:"60s",c:"Rotate knees side to side",y:"90+90+hip+switch+squat+university"},{n:"Deep squat hold",d:"60s",c:"Elbows push knees out",y:"deep+squat+hold+mobility+drill"},{n:"Half-kneeling hip flexor",d:"60s/side",c:"Squeeze glute, lean forward",y:"half+kneeling+hip+flexor+stretch+athlean+x"},{n:"Pigeon stretch",d:"60s/side",c:"Shin across, hinge forward",y:"pigeon+stretch+hip+mobility+how+to"},{n:"Supine figure-4",d:"60s/side",c:"Ankle on knee, pull to chest",y:"figure+4+stretch+supine+glute"},{n:"Cat-cow",d:"60s",c:"Alternate arch and round",y:"cat+cow+stretch+proper+form"}]},
+{t:"Routine B — T-Spine + Shoulder",dy:"Wednesday · 10 min",cl:"var(--green)",ex:[{n:"Thread the needle",d:"60s/side",c:"Reach arm under, rotate",y:"thread+the+needle+thoracic+mobility"},{n:"Open book rotations",d:"60s/side",c:"Side-lying, top arm opens",y:"open+book+rotation+side+lying+thoracic"},{n:"Wall slides",d:"60s",c:"Back on wall, W→Y",y:"wall+slide+exercise+shoulder+mobility"},{n:"Prone Y-T-W raises",d:"60s",c:"Face down, lift to Y/T/W",y:"prone+Y+T+W+raise+scapular+stability"},{n:"Cross-body shoulder",d:"45s/side",c:"Pull arm across chest",y:"cross+body+shoulder+stretch+proper+form"},{n:"Doorway pec stretch",d:"45s/side",c:"Forearm on frame, lean through",y:"doorway+pec+stretch+form"}]},
+{t:"RC Prehab",dy:"Sat warmup (mandatory) + Session D",cl:"var(--red)",ex:[{n:"Band external rotation",d:"2×12",c:"★ Elbows at sides, rotate out",y:"band+external+rotation+elbows+at+sides"},{n:"Scaption",d:"2×12",c:"★ Light DBs 30°, thumbs up",y:"scaption+exercise+supraspinatus+shoulder"},{n:"Side-lying ext rotation",d:"2×12/side",c:"Optional: lie on side, elbow pinned",y:"side+lying+external+rotation+rotator+cuff"},{n:"Prone Y-raise",d:"2×12",c:"Optional: face down, lift to Y",y:"prone+Y+raise+lower+trapezius"},{n:"Face pull + ext rotation",d:"2×12",c:"Optional: pull to face, rotate up",y:"face+pull+external+rotation+Jeff+Cavaliere"}]},
+];
+const R=[
+{w:6,r:1,t:5,c:"",b:"Transition",f:"New 4-run schedule started Mon Jun 15",d:"Optional: one easy 5 km Sat or Sun if fresh.",q:"Nothing to perform this week — wk 7 opens the Mon E · Tue Q · Thu E · Fri L skeleton."},
+{w:7,r:4,t:23,c:"",b:"Cut · first full week",f:"Mon E 5 · Tue Q · Thu E 4 · Fri L 8",d:"Mon: easy 5 @ 5:30–5:55\n★ Tue: TEMPO (below)\nThu: easy 4 — run-commute to gym\nFri: long 8 @ 5:40–6:00",q:"TEMPO — Tue\n2 km easy warm-up → 20 min continuous @ 4:35–4:40/km → 1 km jog down. ~6–7 km total.\nEffort = comfortably hard, 7/10 — short sentences possible, conversation not. If it feels like racing, slow down: tempo run too fast is junk volume. Flat route, settle into pace by minute 3, no surging."},
+{w:8,r:4,t:24,c:"",b:"Cut end · quality protected",f:"Cruise intervals Tue · Sun = travel",d:"Mon: easy 5–6 + strides\n★ Tue: 4×8 min @ threshold\nThu: easy 3–4 (commute)\nFri: long 7–8",q:"CRUISE INTERVALS — Tue\n2 km easy wu + a few strides → 4×8 min @ threshold 4:35–4:40/km, 2 min jog between → 1–2 km cd. ~10 km total.\nThreshold = comfortably hard, about the fastest you could hold for an hour. Keep effort even across all four reps — the last should match the first, not crawl. If rep 3 drifts >5 s/km slower, cut to 3 reps; quality over volume. This is the protected session — it goes ahead even if the rest of the week collapses."},
+{w:9,r:4,t:"30–35",c:"dw",b:"Travel ACTIVE · gym Sat–Sun",f:"20.3 km banked · quality Thu/Fri · PU test Sun",d:"Mon 9.4 ✓ · Wed 10.9 hilly ✓ · Tue SUP ✓\n★ Thu: QUALITY 3×8 min @ threshold\nFri: easy 4–6 + kayak/MTB\nSat: PUSH gym · Sun: PULL + PU MAX TEST",q:"QUALITY — Thu (or Fri, whichever legs allow)\n2 km easy wu → 3×8 min @ threshold 4:35–4:40/km, 2 min jog between → 1–2 km cd (~9 km).\nWed's hilly 10.9 (RE 108) was the accidental hard day — every other km stays conversational. Wk-8 actual was 21.4 km and this week targets 30–35 (+50%): the jump is the injury risk, so any calf/achilles/knee whisper caps the week at 30 — drop easy km, keep this session. Kayak/SUP/MTB ride on top and never count as run km."},
+{w:10,r:4,t:"~33",c:"hw",b:"Build opens † · no gym Sun",f:"Mon E 5 · Tue Q · Fri L 12 · Sun E ≤45′",d:"Mon: easy 5 + strides\n★ Tue: CRUISE 3×10 min @ threshold\nFri: long 12\nSun: easy ≤45 min (no gym Sun)",q:"CRUISE — Tue\n2 km easy wu → 3×10 min @ threshold 4:35–4:40/km †, 2 min jog between → 1 km cd (~9–10 km).\nTwo more minutes per rep than wk 9 — same 7/10 discipline; last hard run before ~Jul 23 (wk 11 = easy-by-design). † paces are living: last rep fastest + HR settling early → take 2–3 s/km off next week. Volume guard: 26.7 → ~33 km (+24%) — any calf/achilles/knee whisper trims Sun/Mon easy km first, Fri long next, never this session. Sunday is capped at 45 min easy and holds no gym."},
+{w:11,r:3,t:"~15",c:"hw",b:"Alps wk — hours not km (restructured Jul 15)",f:"Tue fartlek ✓ banked · Fri climb = the long run · ~10 h aerobic",d:"Mon: travel ✓\n★ Tue: fartlek 9.5 ✓ DONE (RE 68)\nThu: family e-bike 3–5 h (not run km)\nFri: THE CLIMB ~5 km = long run\nSun: optional 20′ jog",q:"THE CLIMB — Fri AM (wears the long-run hat)\nLong-run effort, RPE 6 — breathing you could almost talk through. 2–5 min STANDING reset at the hütte (~3 km) before the grade kicks past 10%, hike the steep final stretch without hesitation, walk down (~45′) — save the Kaiserschmarrn for the descent.\nStrava will show ~5 km and look underperformed — judge the week by relative effort, not distance. One-week substitution: the run stimulus is banked as ~10 h of aerobic hours; goal-pace running resumes wk 12 (4×1,200, wk 12). If it drifts to threshold effort it becomes a third hard day — keep it honest."},
+{w:12,r:2,t:"~20–26",c:"hw",b:"Travel chain to Copenhagen · quality MON",f:"Mon Q (moved from Thu) · Tue–Fri travel · Sat/Sun Cph gym",d:"★ Mon: QUALITY 4×1,200 @ 4:08–4:12, 2:30 jog\nTue: travel (flight+ferry), rest\nThu: drive to Vimmerby + evening easy 5–7\nFri: drive to Copenhagen, rest",q:"QUALITY — MON Jul 20 (moved back from the original Thu Jul 23 slot to protect it ahead of the travel chain)\n2 km easy wu + strides → 4×1,200 m @ 4:08–4:12/km, 2:30 jog recoveries → 1 km cd (~9–10 km).\nBy WATCH — HR/HRV readings are unreliable through Wed Jul 22. RPE valve: if legs feel dead, swap to 3×10′ @ threshold instead of forcing the ladder. No TT in this program: executing this IS the check."},
+{w:13,r:3,t:"~24–28",c:"hw",b:"Travel chain to Como · ENTRY-WEIGHT wk",f:"Mon Q Gbg · Tue legs+drive · Fri push · Sat pull+flight",d:"★ Mon: QUALITY 5×1,000 @ 4:06–4:10, Göteborg\nWed: easy 5–6, Örebro\nSun: easy 6–8, Como",q:"QUALITY — MON Jul 27 (Göteborg, moved back from Tue)\n2 km easy wu + 4×20s strides → 5×1,000 m @ goal pace 4:06–4:10/km † with 2 min jog recoveries → 1 km cd (~10 km).\nHit the pace from rep 1 — first rep too fast is the classic fail; last rep fastest ≈ 20:45–21:00 fitness. ENTRY-WEIGHT week: the last quality session before the cut opens Aug 3 — this week's eating decides whether ≤84.4 stays reachable. Travel structure drops the old Fri tempo-finish long run; Fri is the push session instead."},
+{w:14,r:4,t:"~22–26",c:"mw",b:"Cut wk 1 + Finland move",f:"Mon cut opens · Tue Q · Thu waist+ferry · Fri arrival rest",d:"Mon: cut opens, easy if the flight allows\n★ Tue: 6×800 m @ 4:00–4:05\nThu: waist AM, then ferry\nFri: arrival — rest or 20′ only",q:"INTERVALS — Tue Aug 4\n2 km easy wu + strides → 6×800 m @ 4:00–4:05/km †, 2 min jog recoveries → 1 km cd (~10 km).\nSlightly faster than race pace — completing these ≈ sub-20:45 fitness. Cut days 1–5: glycogen is still full — run as programmed, carbs concentrated around the session; if they die, that's calibration data, not a reason to eat less. Easy volume takes the cut + move trim (~22–26 km); Fri's arrival-day rest is the valve — this session never drops."},
+{w:15,r:3,t:16,c:"mw",b:"Mini-cut 1/5 · Mon rest begins",f:"3 runs from here — Mon = REST",d:"Mon: REST\n★ Tue: 2×10 min @ threshold\nThu: easy 4\nFri: easy 6",q:"CRUISE — Tue\n2 km wu → 2×10 min @ threshold 4:35–4:40 †, 2 min jog → 1 km cd.\nVolume drops ~50% but intensity stays — this single session is what holds the 5K through the deficit. Easy days must be genuinely easy at 2,000 kcal."},
+{w:16,r:3,t:16,c:"mw",b:"Mini-cut 2/5 · 5 km commute starts",f:"Quality = commute home (un-skippable)",d:"Mon: rest\n★ Tue: commute home = 5 km TEMPO †\nThu: easy commute 5\nFri: easy 5–6",q:"COMMUTE TEMPO — Tue, home leg\nFirst 1 km easy out of the office → settle into tempo † for the middle ~3.5 km → float the last 500 m.\nLight bag or leave it at work, flat route. The structural trick of this whole plan: the session starts whether you feel like it or not — you have to get home anyway."},
+{w:17,r:3,t:15,c:"mw",b:"Mini-cut 3/5",f:"Quality = commute home",d:"Mon: rest\n★ Tue: commute home @ RACE PACE †\nThu: easy commute 5\nFri: easy 5 + 4×20s strides",q:"RACE-PACE SIMULATION — Tue, commute home\n1 km easy → 3 km @ goal race pace 4:06–4:10/km † → 1 km easy.\nThis rehearses goal pace in a lighter body (~86 kg). It should feel noticeably easier than wk 13's intervals — that's the weight coming off. Controlled at 4:06 = green light for the race plan. Fri strides keep turnover sharp."},
+{w:18,r:3,t:15,c:"mw",b:"Mini-cut 4/5",f:"Quality = commute fartlek",d:"Mon: rest\n★ Tue: commute fartlek 5×(2′ RP / 1′ float)\nThu: easy commute 5\nFri: easy 5 + strides",q:"COMMUTE FARTLEK — Tue, home leg\n1 km easy → 5×(2 min @ race pace 4:06–4:10 † / 1 min float) → easy to the door.\nSame total RP time as wk 17 in friendlier chunks. From ~Sep 9 expect HR/HRV readings to be unreliable for a week — pre-planned; ignore them, pace by watch."},
+{w:19,r:3,t:12,c:"mw",b:"Mini-cut 5/5 END · watch-paced",f:"RP floats · WATCH only",d:"Mon: rest\n★ Tue: 3×1 km @ RP, 90s floats\nThu: easy 4\nFri: easy 4",q:"RP FLOATS — Tue, commute home\n1 km easy → 3×1 km @ race pace 4:06–4:10 † with 90s float jogs → 1 km easy.\nWATCH only this week — HR readings are unreliable. Controlled reps, nothing heroic: the real test is in 2 weeks at ~84.4 kg, rested. Feeling controlled here = the 20:30 plan is live."},
+{w:20,r:3,t:10,c:"dw",b:"Deload + AM sharpener",f:"Tue AM = go/no-go for the race plan",d:"Mon: rest\n★ Tue AM: 3×1,000 @ RP, full recovery\nThu: easy 4 + strides\nFri: rest",q:"AM SHARPENER — Tue morning (the only race rehearsal)\n2 km easy wu + 3×20s strides → 3×1,000 m @ race pace 4:06/km with FULL recoveries → 1 km cd.\nRun it in the MORNING — the race is an AM race. Feels easy at 4:06 → race the 20:30 plan. Strained → open at 4:10–4:12 and target ~20:50. The go/no-go decision is logged at this week's check-in. Everything else this week is easy + strides — the hay is in the barn."},
+{w:21,r:3,t:10,c:"tw",b:"★ TEST",f:"Shakeout + RACE",d:"Mon: easy 3 + strides\nThu Sep 24: InBody AM, then shakeout 2 + strides\n★ Sat Sep 26 AM: 5K RACE",q:"RACE — Sat Sep 26 AM (Thu Sep 24 = InBody AM · Fri Sep 25 = DEXA + lift event day)\nWarm-up: 2 km easy + 3×20s strides.\nPlan: settle at 4:10–4:12 the first km (it will feel slow — good), lock 4:06–4:08 through 4 km, everything you have from 3.5 km.\n20:30 = 4:06/km average, at ~84.4 kg with a 16-week aerobic block behind you. Trust the even split."},
+];
+const RL=[
+{t:"★ NON-NEGOTIABLE 1 — Pull-up true-max test · DONE Jul 4: 9 strict",b:"Tested first thing in the travel-week pull session (one 5-rep warm-up, then the all-out set). 9 strict = the real ★★★ baseline — under the old 'best single 10'; the +5 kg volume sets overstated the max. Path to 15: weighted reserve through the build (+7.5 → +12.5), BW density conversion in the mini-cut, next measured max = event day Fri Sep 25. The 5K stays untested until Sep 26 by choice (TTs dropped Jun 12); † paces are living estimates tuned by workout execution, not by a TT.",nn:1},
+{t:"★ NON-NEGOTIABLE 2 — One quality run per week",b:"Tuesday is the quality slot, every week. History: easy miles happen, tempo/intervals get skipped, cycling pads the number. If a week collapses, drop easy runs first — KEEP the quality run. From wk 16 the 5 km commute home IS the quality session — structurally un-skippable. Lean on it.",nn:1},
+{t:"The split (from wk 7)",b:"3 mains: Wed Legs · Sat Push+Hang · Sun Pull. Thu Session D = optional accessory. 4 runs: Mon easy · Tue QUALITY · Thu easy (run-commute to gym) · Fri long. ONE session per day, no doubles. Mini-cut (wk 15+): Mon = rest, Session D = off."},
+{t:"Skip priority",b:"Gym: Session D → Legs → Pull → NEVER Sat Push. Runs: easy runs drop first, the quality run never drops. Never 2 skips in a row. Session D NEVER substitutes for a skipped main session — a missed pull is made up as pull."},
+{t:"Session D rules",b:"Optional, everything RIR 2–3. First thing dropped when the week is tight. Must leave zero soreness for Fri long run / Sat bench. Thu easy run doubles as the run-commute to the gym so the no-doubles rule holds. Off by default during the mini-cut."},
+{t:"Priority order",b:"Pull-ups ★★★ > Bench ★★★ > 5K ★★★ > Dead hang ★★★ > BF <12% ★★★ > Squat ★★ (parked by choice) > DL (maintain via RDL)."},
+{t:"Calories — logged units",b:"Cut finish (wk 6–8): 2,000. Mini-cut (opens Mon Aug 3, was Jul 31): 2,000 PROVISIONAL — re-tiered per §1d at the Aug 8–9 InBody (now the Helsinki competition device, weekly Sat scans). Build wk 10–11: 3,000–3,400 clean (owner, active weeks) · wk 12–13: untracked travel — normal eating, protein by habit. Taper/deload (wk 20–21): verified maintenance ~2,750. Protein floor 180 g EVERY day, ALL phases — it decides whether you land ~11.4% or ~12.4% at test."},
+{t:"Bench — one number",b:"The load wandered Jan–May (80→83→90→retreat→88) while reps-at-weight held the whole cut. Bench is NOT deficit-blocked. Fix: ONE number, add reps to top of range before adding weight. Now: 92.5 held through wk 11 (92.5×6/6/7 Jul 18 — travel-week hold, not a stall); chase 8/8/8 Sat Jul 25 (Copenhagen) → unlocks 95. Build: → ~100 by wk 13 (+2.5 when reps clear — though wk 13 intake is now untracked travel). Mini-cut: hold the build top, FULL sessions. Wk 20: heavy single ~110. Test: 1RM."},
+{t:"Auto-regulation — both directions",b:"Miss prescribed reps at a weight 2 sessions running → HOLD, don't add. AND the inverse (the squat lesson): holding a weight while reps decline is a stall — flag it at the next check-in, don't let it ride for months."},
+{t:"Squat = parked, on purpose",b:"100 kg held since Jan with reps declining — through the cut this is a DECISION, not a stall. Refresh wk 10–14: 102.5→112.5 working. Yields first in heavy weeks."},
+{t:"Grip order (hang rule)",b:"Dead hang max lives on SATURDAY — push day, grip fresh. Submax hang practice in Session D. NEVER max hangs after pull work; weighted PUs always first on Sunday."},
+{t:"Flagged weeks (11, 19)",b:"Pace runs by WATCH, not HR. Wk 11 (CLOSED) trained BIG by owner call (Jul 12) — HR/HRV/readiness readings were unreliable Jul 15–22 (RHR peaked 66 / HRV dipped to 37 Fri — expected, pre-planned). Dips in flagged windows are pre-planned and expected; do NOT deload or cut calories off them. Wk 19 unchanged."},
+{t:"Mini-cut (Aug 3 → Sep 14 gate)",b:"Opens Mon Aug 3 (was Jul 31 — travel ran continuously to Aug 3) @ 2,000 provisional (§1d re-tier at the Aug 8–9 InBody) · gate Sep 13–14: ≤84.4 stop · 84.5–84.9 extend ≤Sep 19 · ≥85.0 October finish. Weighted PUs convert to BW density as you lighten. Hold compound weights, FULL Saturday sessions. Mon = rest, Session D off (from wk 15). Strength loss target <3%."},
+{t:"Off weekends (expect ~2)",b:"Don't compensate after. Hit 180 g protein, do the easy run, weigh Thu not Mon. Accept ~0.3 kg less lost. April proved prescriptions don't survive social periods — plan for it instead."},
+{t:"Holiday build = HIGHEST-RISK phase",b:"Not the fun phase. April erased a month the same way. The planned 2,600 ceiling was overridden twice this block: wk 10–11 ran 3,000–3,400 clean (owner fueling call) · wk 12–13 untracked travel (owner, Jul 19) — normal eating, protein by habit. Full sessions regardless; Thu weigh-in resumes with the cut Aug 3."},
+{t:"BF% arithmetic (measured Jun 24–25)",b:"DEXA 15.2% / InBody 12.8% at 87.5–89 kg; FFM held 75.5–76.3 (recomp confirmed). ~4 kg fat left → ≤84.4 kg ≈ sub-12% DEXA-eq (Jul 1 restatement). DEXA-equivalent = InBody + 2.4 pts. Waist <80 cm confirms. Protein + heavy compounds in the mini-cut decide it."},
+{t:"Measurement protocol",b:"Weight + waist PAUSED Jul 12 (holiday, owner) → BOTH resume Mon Aug 3 with the cut (first Thu waist Aug 6 AM, pre-ferry); first Helsinki InBody Aug 8–9 fasted AM = recalibration baseline (pass line + kcal tier), then WEEKLY Sat fasted-AM scans through the cut (trend instrument; the ~Sep 12 scan is skipped — flagged week). Then: weight daily fasted AM, judge weekly averages · waist Thu AM, 93 → <80. Cycling/kayak/MTB ≠ running: log run km separately."},
+{t:"Recovery triggers",b:"7 training days/week is sustainable only if easy runs stay EASY. HRV 7-day <36 or RHR >61 for several days → convert an easy run to full rest. Flagged windows excluded (see Flagged weeks)."},
+{t:"5K calibration ladder (no TTs)",b:"Quality execution IS the fitness test: wk-13 1,000s with last rep fastest ≈ 20:45–21:00 · wk-14 800s @ 4:00–4:05 ≈ sub-20:45 · wk 17–19 race-pace commute sims at 4:06 feeling controlled = green light · wk-20 AM sharpener = the only race rehearsal → go/no-go on the 20:30 plan at the wk-20 check-in. Race day: open 4:10–4:12, lock 4:06–4:08 through 4 km, empty from 3.5 km."},
+{t:"Test days (Sep 24–26) + comp format (6 events, confirmed Jul 19)",b:"COMP EVENTS: bench 1.375 × Thu scan BW (the ONLY weight-scaled event → ~116–117 @ 84.4–85; ceiling 120 covers BW ≤ 87.3) · pull-ups · dead hang · push-ups 60 in 2:00 · 1 MILE (day TBC) · 5K. 12% BF = one-off raw threshold (~9–10% read at 84–85, big slack). Thu Sep 24: OFFICIAL InBody (Helsinki, fasted AM) — mild management green-lit: lighter-carb/low-sodium Wed, NO dehydration (each optical kg = −1.375 kg required bench; helps nothing else — every other event runs at real BW, fuelled); re-feed carbs immediately after. Fri Sep 25: MAIN TEST DAY (fuelled) — midday DEXA · comp: PU max + hang max + push-ups 2:00 + bench 1RM + 1 mile (assumed — confirm) · personal: squat 1RM + DL casual. Sat Sep 26 AM: 5K race."},
+];
+function rx(t){return t.split('\n').filter(l=>l.trim()).map(l=>{let c='',h=l;if(l.includes('SS:')){h=l.replace(/SS:/,'<span class="ss">SS</span>')}if(l.includes('★')){h='<span class="star">★</span>'+l.replace(/★/g,'').trim()}if(l.startsWith('WU')||l.startsWith('Warmup'))c='wu';return`<li class="${c}">${h}</li>`}).join('')}
+const wc=document.getElementById('wks');
+function currentWeekNum(){
+var a=new Date(2026,5,8);a.setHours(0,0,0,0);
+var t=new Date();t.setHours(0,0,0,0);
+var wn=6+Math.floor((t-a)/(7*86400000));
+if(wn<6)wn=6;if(wn>21)wn=21;return wn;}
+var CURW=currentWeekNum();
+var RQ={};R.forEach(function(r){RQ[r.w]=r;});
+(function(){
+document.title='Wk '+CURW+' / 21 — September Test';
+var hw=document.getElementById('heroWk');if(hw)hw.textContent='Wk '+CURW+' of 21';
+var wt=document.getElementById('weeksToTest');if(wt){var n=21-CURW;wt.textContent=n>0?(n+' Week'+(n>1?'s':'')+' to'):"It's";}
+var cw=W.filter(function(x){return x.w===CURW;})[0];
+var kb=document.getElementById('kbNow');if(kb&&cw)kb.textContent='Now · Wk '+CURW+' ('+cw.d+')';
+})();
+function parseRuns(rn){
+var days={Mon:[],Tue:[],Thu:[],Fri:[]},extra=[],total='';
+rn.split('\n').forEach(function(line){
+var l=line.trim();if(!l)return;
+var star=l.indexOf('★')>=0;l=l.replace(/★/g,'').trim();
+var m=l.match(/^(Mon|Tue|Thu|Fri)\s*:\s*(.+)$/);
+if(m){days[m[1]].push({t:m[2],star:star});}
+else if(/^Total/i.test(l)){total=l;}
+else{extra.push({t:l,star:star});}});
+return {days:days,extra:extra,total:total};}
+function anyStar(a){return a.some(function(e){return e.star;});}
+function runLis(a){return a.map(function(e){return '<li>'+e.t+'</li>';}).join('');}
+function dayBlock(cls,code,label,star,liHtml,extra){
+return '<div class="db"><div class="dl_"><div class="di '+cls+'">'+code+'</div>'+label+(star?' <span class="kstar">★</span>':'')+'</div><ul class="el">'+liHtml+'</ul>'+(extra||'')+'</div>';}
+function buildQ(q){
+return '<div class="rmore" onclick="event.stopPropagation();this.classList.toggle(\'op\');this.nextElementSibling.classList.toggle(\'o\')">how to run it <span class="ch">▾</span></div><div class="rdet"><div class="rwq"><div class="rwqt">★ How to run it</div>'+q+'</div></div>';}
+function starredDay(pr){var ds=['Mon','Tue','Thu','Fri'];for(var i=0;i<ds.length;i++){if(pr.days[ds[i]].some(function(e){return e.star;}))return ds[i];}return null;}
+var OPT='Thursday — Session D <span style="font-weight:400;text-transform:none;font-style:italic;color:var(--dim)">(optional)</span>';
+var OPT9='Outdoor XT <span style="font-weight:400;text-transform:none;font-style:italic;color:var(--dim)">(kayak · SUP · MTB)</span>';
+var cueEasy='<div class="rcue">Conversational — full sentences. Keep it genuinely easy.</div>';
+var cueLong='<div class="rcue">Easy aerobic, just longer — relaxed the whole way.</div>';
+W.forEach(function(w,i){
+if(w.w===6)wc.innerHTML+='<div class="bd c1">Cut Finish · 89.6→88 · 2,000 kcal</div>';
+if(w.w===9)wc.innerHTML+='<div class="bd c5">Travel Active Week — Run + XT + Gym Sat–Sun</div>';
+if(w.w===10)wc.innerHTML+='<div class="bd c2">Build + Holiday · wk 10–11: 3,000–3,400 active · wk 12–13: untracked travel (protein by habit) · HIGHEST-RISK PHASE</div>';
+if(w.w===14)wc.innerHTML+='<div class="bd c4">Mini-Cut · opens Mon Aug 3 (was Jul 31) · entry→≤84.4 · 2,000 provisional (§1d re-tier @ Helsinki InBody Aug 8–9, then weekly Sat scans) · Mon rest, D off from wk 15</div>';
+if(w.w===20)wc.innerHTML+='<div class="bd c5">Deload + Test</div>';
+var pl={cut:'Cut',mnt:'Build',hol:'Holiday',mc:'Mini-Cut',dl:'Deload',tst:'Test'}[w.ph];
+var isCur=(w.w===CURW);
+var cur=isCur?' x now':'';
+var curBadge=isCur?'<span class="pb tst" style="background:var(--purp);border-color:var(--purp);color:#fff"><span class="pd" style="background:#fff"></span>NOW</span>':'';
+var rq=RQ[w.w];
+var runMeta=rq?(' · '+rq.r+' runs · '+rq.t+' km'):'';
+var qBox=(rq&&rq.q)?buildQ(rq.q):'';
+var pr=parseRuns(w.rn);
+var hasRuns=(pr.days.Mon.length+pr.days.Tue.length+pr.days.Thu.length+pr.days.Fri.length)>0;
+var sd=starredDay(pr);
+var extraStarred=pr.extra.some(function(e){return e.star;});
+var qTarget;
+if(sd)qTarget=sd;
+else if(extraStarred)qTarget='notes';
+else if(pr.days.Tue.length)qTarget='Tue';
+else qTarget='notes';
+var body='';
+if(hasRuns){
+if(pr.days.Mon.length){
+if(pr.days.Mon.length===1&&/^rest/i.test(pr.days.Mon[0].t))body+=dayBlock('rest','Mo','Monday — Rest',false,'<li>'+pr.days.Mon[0].t+'</li>','');
+else body+=dayBlock('run','Mo','Monday — Easy run',anyStar(pr.days.Mon),runLis(pr.days.Mon),qTarget==='Mon'?qBox:cueEasy);}
+if(pr.days.Tue.length)body+=dayBlock('run','Tu','Tuesday — Quality run',anyStar(pr.days.Tue),runLis(pr.days.Tue),qTarget==='Tue'?qBox:cueEasy);
+body+=dayBlock('gym','We',w.w===9?'Wednesday — no legs session':'Wednesday — Legs',false,rx(w.tu),'');
+if(pr.days.Thu.length)body+=dayBlock('run','Th',w.w===9?'Thursday — Quality run':'Thursday — Easy run',anyStar(pr.days.Thu),runLis(pr.days.Thu),qTarget==='Thu'?qBox:cueEasy);
+body+=dayBlock('opt','D',w.w===9?OPT9:OPT,false,rx(w.th),'');
+if(pr.days.Fri.length)body+=dayBlock('run','Fr',w.w===9?'Friday — Easy run':'Friday — Long run',anyStar(pr.days.Fri),runLis(pr.days.Fri),qTarget==='Fri'?qBox:cueLong);
+body+=dayBlock('gym','Sa','Saturday — Push + Hang',false,rx(w.sa),'');
+body+=dayBlock('gym','Su','Sunday — Pull',false,rx(w.su),'');
+if(pr.extra.length||pr.total){
+var ex=pr.extra.map(function(e){return '<li>'+(e.star?'<span class="kstar">★</span>':'')+e.t+'</li>';}).join('');
+if(pr.total)ex+='<li class="wu">'+pr.total+'</li>';
+body+='<div class="db"><div class="dl_"><div class="di run">R</div>Running notes</div><ul class="el">'+ex+'</ul>'+(qTarget==='notes'?qBox:'')+'</div>';
+}else if(qTarget==='notes'){
+body+='<div class="db"><div class="dl_"><div class="di run">R</div>Key workout</div>'+qBox+'</div>';}
+}else{
+body+=dayBlock('gym','We','Wednesday — Legs',false,rx(w.tu),'');
+body+=dayBlock('opt','D',OPT,false,rx(w.th),'');
+body+=dayBlock('gym','Sa','Saturday — Push + Hang',false,rx(w.sa),'');
+body+=dayBlock('gym','Su','Sunday — Pull',false,rx(w.su),'');
+body+=dayBlock('run','R','Running',false,rx(w.rn),qBox);}
+wc.innerHTML+='<div class="wc'+cur+'" onclick="this.classList.toggle(\'x\')"><div class="wh"><div class="wl"><div class="wn">'+w.w+'</div><div class="wm"><div class="wt">'+w.t+'</div><div class="wi">'+w.d+' · '+w.bw+' kg · '+w.k+runMeta+' <span class="pb '+w.ph+'"><span class="pd"></span>'+pl+'</span>'+curBadge+'</div></div></div><div class="wch">▾</div></div><div class="wb"><div class="wcon">'+body+'</div></div></div>';
+});
+const mc=document.getElementById('mob');
+M.forEach(r=>{mc.innerHTML+=`<div class="rc" onclick="this.classList.toggle('x')"><div class="rch"><div><div class="rct" style="color:${r.cl}">${r.t}</div><div class="rcd">${r.dy}</div></div><div class="rv">▾</div></div><div class="rcb">${r.ex.map(e=>`<div class="me"><div class="ml"><div class="mn">${e.n}</div><div class="mcu">${e.c}</div><a class="yt" href="https://www.youtube.com/results?search_query=${e.y}" target="_blank">▶ YouTube</a></div><div class="md">${e.d}</div></div>`).join('')}</div></div>`});
+const rl=document.getElementById('rls');
+RL.forEach(r=>{rl.innerHTML+=`<div class="rl${r.nn?' nn':''}"><div class="rlt">${r.t}</div><div class="rlb">${r.b}</div></div>`});
+const WKL=[
+{w:6,lift:130,run:5,total:2.7,load:30,ph:"cut",n:"Transition"},
+{w:7,lift:225,run:23,total:6.2,load:67,ph:"cut",n:"First new-split week"},
+{w:8,lift:140,run:21,total:4.6,load:56,ph:"cut",n:"Cut end · Sun travel"},
+{w:9,lift:130,run:33,total:6.5,load:62,ph:"dl",n:"Travel ACTIVE · gym Sat–Sun"},
+{w:10,lift:225,run:29,total:6.8,load:74,ph:"hol",n:"Build opens"},
+{w:11,lift:160,run:15,total:9.5,load:78,ph:"hol",n:"BIG by hours (rides+climb; watch only)"},
+{w:12,lift:225,run:23,total:7.1,load:75,ph:"hol",n:"Travel chain to Cph · quality MON"},
+{w:13,lift:225,run:26,total:7.4,load:84,ph:"hol",n:"Travel chain to Como · entry-weight wk (was PEAK 35)"},
+{w:14,lift:215,run:24,total:6.6,load:73,ph:"mc",n:"Cut wk 1 + move · 800s · InBody Aug 8–9"},
+{w:15,lift:180,run:16,total:4.7,load:49,ph:"mc",n:"Mini-cut · Mon rest, D off"},
+{w:16,lift:180,run:16,total:4.7,load:49,ph:"mc",n:"Mini-cut · 5km commute"},
+{w:17,lift:180,run:15,total:4.6,load:48,ph:"mc",n:"Mini-cut"},
+{w:18,lift:180,run:15,total:4.6,load:47,ph:"mc",n:"Mini-cut"},
+{w:19,lift:170,run:12,total:4.1,load:42,ph:"mc",n:"Mini-cut END · gate Sep 13–14"},
+{w:20,lift:100,run:10,total:2.8,load:30,ph:"dl",n:"Deload + AM sharpener"},
+{w:21,lift:40,run:10,total:1.7,load:20,ph:"tst",n:"TEST week"},
+];
+
+const MVOL=[
+{mg:"Chest",sets:8,tgt:"10-20",pct:50,nt:"Bench + incline + dips · +2 with D"},
+{mg:"Back/lats",sets:11,tgt:"10-20",pct:70,nt:"Wtd PU + seal row + pulldown · +3 with D"},
+{mg:"Pull-ups (specific)",sets:5,tgt:"high (priority)",pct:85,nt:"Sun weighted 5×5 · +3 BW with D"},
+{mg:"Side delts",sets:3,tgt:"8-16",pct:40,nt:"Sat lat raise · +3 with D — accepted cost of 3-day split"},
+{mg:"Rear delts",sets:5,tgt:"8-12",pct:70,nt:"Rear delt fly + face pulls (Sun)"},
+{mg:"Front delts/press",sets:6,tgt:"6-10",pct:75,nt:"DB shoulder press + bench · +3 light with D"},
+{mg:"Triceps",sets:4,tgt:"6-14",pct:40,nt:"Dips + pressing (low — by choice)"},
+{mg:"Biceps",sets:3,tgt:"6-14",pct:30,nt:"Incline curl · +2 with D (low — by choice)"},
+{mg:"Quads",sets:3,tgt:"8-16",pct:40,nt:"Squat only — ★★ parked; 4 runs/wk cover legs"},
+{mg:"Hamstrings",sets:6,tgt:"6-12",pct:75,nt:"RDL + squat"},
+{mg:"Glutes",sets:6,tgt:"6-12",pct:80,nt:"Squat + RDL"},
+{mg:"Calves",sets:3,tgt:"6-12",pct:38,nt:"Calf raise (low — accept for running)"},
+{mg:"Core/abs",sets:3,tgt:"4-8",pct:60,nt:"Ab rollout Wed (leg raises dropped with old split)"},
+];
+const wkld=document.getElementById('wkld');
+const phColors={cut:'var(--blue)',mnt:'var(--green)',hol:'var(--cyan)',mc:'var(--red)',dl:'var(--org)',tst:'var(--purp)'};
+const maxLoad=Math.max(...WKL.map(w=>w.load));
+WKL.forEach(w=>{
+const barW=(w.load/maxLoad)*100;
+wkld.innerHTML+=`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px 12px;margin-bottom:6px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600">Wk ${w.w} · ${w.n}</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:${phColors[w.ph]};font-weight:700">${w.load}</span>
+</div>
+<div style="background:var(--sf);border-radius:4px;height:6px;overflow:hidden;margin-bottom:4px">
+<div style="background:${phColors[w.ph]};height:100%;width:${barW}%"></div>
+</div>
+<div style="font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace">Lift ${w.lift}m · Run ${w.run}km · ${w.total}h total</div>
+</div>`});
+
+const mvol=document.getElementById('muscle-vol');
+MVOL.forEach(m=>{
+let color='var(--green)';
+if(m.pct<50)color='var(--red)';
+else if(m.pct<75)color='var(--yel)';
+mvol.innerHTML+=`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px 12px;margin-bottom:6px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+<span style="font-size:12px;font-weight:600">${m.mg}</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:${color};font-weight:700">${m.sets} sets · target ${m.tgt}</span>
+</div>
+<div style="background:var(--sf);border-radius:4px;height:5px;overflow:hidden;margin-bottom:4px">
+<div style="background:${color};height:100%;width:${m.pct}%"></div>
+</div>
+<div style="font-size:10px;color:var(--dim)">${m.nt}</div>
+</div>`});
+
+document.querySelectorAll('.nt').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.nt').forEach(x=>x.classList.remove('a'));document.querySelectorAll('.sec').forEach(x=>x.classList.remove('a'));t.classList.add('a');document.getElementById(t.dataset.t).classList.add('a');window.scrollTo(0,0)})});
+</script>
+</body>
+</html>
