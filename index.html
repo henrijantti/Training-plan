@@ -131,7 +131,13 @@ function dateOf(s){var p=String(s).split('-');return new Date(+p[0],+p[1]-1,+p[2
 function weekOf(d){var a=dateOf(P.block.reanchor.date),days=Math.round((d-a)/86400000);var w=P.block.reanchor.week+Math.floor(days/7);return Math.max(1,Math.min(P.block.weeks,w));}
 function scanLabel(){var d=dateOf(P.block.test.scan);return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getDate();}
 function daysToTest(d){return Math.max(0,Math.round((dateOf(P.block.test.scan)-d)/86400000));}
-var TODAY=new Date();TODAY.setHours(0,0,0,0);var CURW=weekOf(TODAY);var DOW=DOWS[(TODAY.getDay()+6)%7];
+var _q=/[?&]today=(\d{4}-\d{2}-\d{2})/.exec(location.search);var TODAY=_q?dateOf(_q[1]):new Date();TODAY.setHours(0,0,0,0);
+var CALW=weekOf(TODAY),DOW=DOWS[(TODAY.getDay()+6)%7];
+function weekStart(n){var d=dateOf(P.block.reanchor.date);d.setDate(d.getDate()+(n-P.block.reanchor.week)*7);return d;}
+// Close-Sunday rule: once the calendar week is closed in plan.yaml the page rolls forward — the
+// coming week is "this week", the one after "next week", and the Today card shows its Monday.
+var ROLLED=!!(week(CALW)&&week(CALW).actual&&week(CALW).actual.closed&&week(CALW+1));
+var CURW=ROLLED?CALW+1:CALW,DAYS_TO_START=ROLLED?Math.round((weekStart(CURW)-TODAY)/86400000):0;
 document.title='Wk '+CURW+' / '+P.block.weeks+' — September Test';
 var ENT={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return ENT[c];});}
@@ -156,8 +162,8 @@ function phaseLabels(){var wks=num(P.block.weeks,0),out='',L=P.block.labels.slic
   out+='<span style="grid-column:'+f+' / '+(t+1)+(t===wks?';text-align:right':'')+'">'+esc(n)+'</span>';});return out;}
 function ticks(){var n=num(P.block.weeks,0),out='';for(var w=1;w<=n;w++){out+='<i class="tick '+(w<CURW?'past':w===CURW?'current':'')+'"></i>';}return out;}
 function week(n){return P.weeks[String(n)]||P.weeks[n]||null;}
-function todayRow(w){return (w&&w.days||[]).filter(function(d){return d.dow===DOW;})[0]||null;}
-function dayState(d){var i=DOW_I(d.dow),t=DOW_I(DOW);return i<t?'past':i===t?'today':'future';}
+function todayRow(w){var dow=ROLLED?'Mon':DOW;return (w&&w.days||[]).filter(function(d){return d.dow===dow;})[0]||null;}
+function dayState(d){if(ROLLED)return 'future';var i=DOW_I(d.dow),t=DOW_I(DOW);return i<t?'past':i===t?'today':'future';}
 function DOW_I(x){return DOWS.indexOf(x);}
 function fmtDate(d){return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()].toUpperCase()+' '+d.getDate()+' '+['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()];}
 function hasMins(m){return m.live.some(function(e){return e.minutes!=null&&e.minutes!=='';});}
@@ -208,13 +214,13 @@ var MEM={};function lsGet(k){try{var v=localStorage.getItem(k);if(v!=null)return
 function splitRx(s){s=String(s);var m=s.match(/^(.*?)\s+((?:[\d~][\d.,–\-]*\s*(?:kg|km|′|″|min)?\s*(?:×\s*)?)+[^a-zA-Z]*)$/);return m&&m[2].trim()?[m[1],m[2].trim()]:[s,''];}
 function cap(s){s=String(s);return s.charAt(0).toUpperCase()+s.slice(1);}
 function todayCard(t){var mn=dayMins(t);
-  return '<div class="card today-card"><div class="card-head"><span class="eyebrow acc">TODAY · '+fmtDate(TODAY)+'</span><span class="eyebrow">'+(mn?'~'+esc(mn)+'′':'')+'</span></div>'
+  return '<div class="card today-card"><div class="card-head"><span class="eyebrow acc">'+(ROLLED?(DAYS_TO_START===1?'TOMORROW':'NEXT UP')+' · '+fmtDate(weekStart(CURW)):'TODAY · '+fmtDate(TODAY))+'</span><span class="eyebrow">'+(mn?'~'+esc(mn)+'′':'')+'</span></div>'
   +'<div class="today-title">'+star(esc(t.title||t.text||t.gym||t.run))+'</div>'
   +(t.details?'<div class="grid2">'+t.details.map(function(r){var s=splitRx(r[0]);return '<div><div>'+esc(s[0])+'</div><div class="dn'+(r[2]==='caution'?' caution':'')+'">'+esc(cap(r[1]))+'</div></div><div class="dv'+(s[1]?'':' dim')+'">'+esc(s[1]||'')+'</div>';}).join('')+'</div>':'')
   +(t.note?'<div class="coach-note">'+esc(t.note)+'</div>':'')
   +(t.session?'<button class="btn open" data-nav="session" data-arg="'+esc(t.session)+'|'+esc(t.dow)+'">Open session</button>':'')+'</div>';}
 VIEWS.home=function(){var w=week(CURW),t=todayRow(w);
-  return '<div class="block-head"><div class="wk-name">Week '+esc(CURW)+' of '+esc(P.block.weeks)+(w&&w.name?' · '+esc(w.name):'')+'</div><div class="dtt"><b>'+daysToTest(TODAY)+'</b><span>days to scan · '+esc(scanLabel())+'</span></div></div>'
+  return '<div class="block-head"><div class="wk-name">Week '+esc(CURW)+' of '+esc(P.block.weeks)+(w&&w.name?' · '+esc(w.name):'')+(ROLLED?' · from '+(DAYS_TO_START===1?'tomorrow':'Monday'):'')+'</div><div class="dtt"><b>'+daysToTest(TODAY)+'</b><span>days to scan · '+esc(scanLabel())+'</span></div></div>'
   +'<div class="ticks">'+ticks()+'</div><div class="labels">'+phaseLabels()+'</div>'
   +(t?todayCard(t):'')+numbers()+weekBlock(w,false,true)+nonNegotiables();};
 function weekBlock(w,nx,dense){if(!w)return '';return '<section class="sec"><div class="sec-head"><div class="sec-title">'+(nx?'Next week':'This week')+(w.name?' — '+esc(w.name):'')+'</div><div class="sec-meta">'+esc(String(w.dates||'').toUpperCase())+(nx?'<span class="eyebrow">PLANNED</span>':'')+'</div></div>'
@@ -241,8 +247,7 @@ function mergeSession(s,ov){ov=ov||{};var out={title:s.title,minutes:s.minutes,n
   out.live=out.exercises.filter(function(e){return !e.dropped;});
   out.minutes=out.live.reduce(function(a,e){return a+num(e.minutes,0);},0);return out;}
 function mins(v){return v!=null&&v!==''?esc(v)+'′':'';}
-function dateForDow(dow){var mon=new Date(TODAY);mon.setDate(TODAY.getDate()-((TODAY.getDay()+6)%7));
-  var d=new Date(mon);d.setDate(mon.getDate()+Math.max(0,DOW_I(dow)));return d;}
+function dateForDow(dow){var d=weekStart(CURW);d.setDate(d.getDate()+Math.max(0,DOW_I(dow)));return d;}
 function isoOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function keepScroll(fn){var y=window.pageYOffset;fn();window.scrollTo(0,y);}
 function openSession(id){lsSet('sessions:open',lsGet('sessions:open')===id?'':id);keepScroll(function(){render(CURVIEW);});}
